@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {render} from 'react-dom';
 // import { createStore } from 'redux'
-
+import styles from './index.css'
 
 let pers = {
   health: 0,
@@ -13,12 +13,15 @@ let pers = {
   int: 0,
 };
 
-let baseskelet = {
-	health: 50,
-	atk: 1,
+
+function baseskelet(h, a) {
+	this.health = h,
+	this.atk = a,
+	this.isDeath = false
 }
 
 let startpoints = 10;
+let skeletcount = 0;
 
 class Pers extends Component {
   render() {
@@ -84,8 +87,8 @@ class Startpoints extends Component {
   render () {
     let button = (
     	<div>
-	      <button id="pointbtnstr" onClick={this.addStr.bind(this)}>Добавить очки в силу</button>
-	      <button id="pointbtnint" onClick={this.addInt.bind(this)}>Добавить очки в интеллект</button>
+	      <button id="pointbtnstr" className="btn btn-primary" onClick={this.addStr.bind(this)}>Добавить очки в силу</button>
+	      <button id="pointbtnint" className="btn btn-primary" onClick={this.addInt.bind(this)}>Добавить очки в интеллект</button>
 	    </div>
       );
     let p = this.state.count;
@@ -93,12 +96,13 @@ class Startpoints extends Component {
     pers.health = pcurr;
     return (
         <div>
-	          <p>Стартовое здоровье: {pers.health} / {pers.maxhealth = this.state.maxhealth}</p>
-	          <p>Стартовое Мана: {pers.mana = this.state.mana} / {pers.maxmana = this.state.mana} </p>
-	          <p>Стартовая Атака: {pers.atk = this.props.atk}</p>
-	          <p>Стартовое Сила: {pers.str = this.state.str}</p>
-	          <p>Стартовое Интеллект: {pers.int = this.state.int}</p>
-	          <p> Стартовые очки: {startpoints = this.state.count} </p>
+	          <p><b>Здоровье:</b> {pers.health} / {pers.maxhealth = this.state.maxhealth}</p>
+	          <ProgressBar type={pers.health} /> 
+	          <p><b>Мана:</b> {pers.mana = this.state.mana} / {pers.maxmana = this.state.mana} </p>
+	          <p><b>Атака:</b> {pers.atk = this.props.atk}</p>
+	          <p><b>Сила:</b> {pers.str = this.state.str}</p>
+	          <p><b>Интеллект:</b> {pers.int = this.state.int}</p>
+	          <p><b>Очки:</b> {startpoints = this.state.count} </p>
 	        {button}
 	        <NewGame chars={pers} points={p} statschild={this.statschild.bind(this)}/>
         </div>
@@ -123,20 +127,21 @@ class NewGame extends Component {
 
 	render() {
 		let New;
+		let newskelet = new baseskelet(10, 1)
 		if (this.props.points === 0) {
 			if (this.state.isNewGame === true) {
 				New = (
 					<div>
 						<p>Очки распределены!</p> 
-						<button onClick={this.NewGame.bind(this)}>Начать новую игру</button>
-						<Skeletons chars={this.props.chars} skeleton={baseskelet} statschild={this.props.statschild.bind(this)}/>
+						<button  className="btn btn-primary" onClick={this.NewGame.bind(this)}>Начать новую игру</button>
+						<Skeletons chars={this.props.chars} skeleton={newskelet} statschild={this.props.statschild.bind(this)}/>
 					</div>
 					)
 			} else {
 				New = (
 					<div>
 						<p>Очки распределены!</p> 
-						<button onClick={this.NewGame.bind(this)}>Начать новую игру</button>
+						<button  className="btn btn-primary" onClick={this.NewGame.bind(this)}>Начать новую игру</button>
 					</div>
 					)
 			}
@@ -153,37 +158,106 @@ class Skeletons extends Component {
  		this.state = {
  			skhealth: this.props.skeleton.health,
  			skatk: this.props.skeleton.atk,
+ 			youratk: this.props.chars.atk,
  			isDeath: false,
  		}
  	}
 
  	skattack() {
- 		pers.health = pers.health - 1;
- 		let currhealth = pers.health;
- 		this.props.statschild(currhealth);
- 		console.log(pers)
+ 		if (this.state.skhealth > 1 && pers.health > 1) {
+	 		pers.health = pers.health - this.state.skatk;
+	 		let currhealth = pers.health;
+	 		this.props.statschild(currhealth);
+ 		} else {
+ 			pers.health = pers.health;
+ 			let currhealth = pers.health;
+ 			this.props.statschild(currhealth);
+ 		}
+
+
  	}
 
+ 	youratk() {
+ 		if (this.state.skhealth > 1) {
+	 		this.setState({
+	 			skhealth: this.state.skhealth - 1,
+	 		})
+ 		} else {
+ 			this.setState({
+ 				skhealth: this.state.skhealth,
+ 				isDeath: true,
+ 			})
+ 			skeletcount = skeletcount + 1;
+ 		}
+ 	}
+
+ 	intervalfunc() {
+ 		var interval = setInterval(this.skattack.bind(this), 100)
+ 	}
+
+ 	makenewskelet() {
+ 		let newskelet = new baseskelet(10,1)
+ 		this.setState({
+ 			skhealth: newskelet.health,
+ 			skatk: newskelet.atk,
+ 			isDeath: false,
+ 		})
+ 	}
+
+ 	increaseSkeletcount () {
+ 		skeletcount = skeletcount + 1
+ 	}
+
+
+ 	componentDidMount() {
+ 		this.intervalfunc()
+ 	}
+
+
  	render() {
+ 		let skeletonDies;
+ 		if (this.state.isDeath === false) {
+ 			skeletonDies = (
+ 					<div><p>Создан скелет. Здоровье скелета {this.state.skhealth}, и  {this.state.skatk*10} атака. Он наносит Вам  
+	 				 {" "} {this.state.skatk*10}  урона в секунду.
+	 				</p> 
+	 				<button className="btn btn-danger" onClick={this.youratk.bind(this)}>Атаковать скелета силой атаки: {this.state.youratk}</button></div>
+ 				)
+ 		} else {
+ 			skeletonDies = (
+ 					<div><p> Скелет убит! Позравляю! Склеетов убито {skeletcount}</p> <br /><br /><button  className="btn btn-primary" onClick={this.makenewskelet.bind(this)}>Вызвать следующего скелета</button></div>
+ 				)
+ 		} 
+
+ 		if (pers.health < 2) {
+ 			skeletonDies = (
+ 					<div><p>Вас Убили!</p> </div>
+ 				)
+ 		}
  		return(
  				<div>
-	 				<p>Создан скелет с {this.state.skhealth} здороьем, и  {this.state.skatk} атакой. Он наносит Вам  
-	 				 {" "} {this.state.skatk}  урона в секунду.
-	 				</p> 
+	 				{skeletonDies}
  				</div>
  			)
  	}
 }
 
+class ProgressBar extends Component {
+	constructor() {
+		super(...arguments)
+	}
 
-function intervalRender() {
-  if (startpoints === 0) {
-  	console.log('12321');
-  }
+	render() {
+		let progstyle = {
+			width: this.props.type,
+		}
+		return(
+			<div className="progress">
+				 <div className="progress-bar" role="progressbar" style={progstyle} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
+			)
+	}
 }
-
-
-
 
  render(
     <Pers />,
