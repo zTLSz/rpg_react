@@ -6,9 +6,14 @@ body {
   line-height: 1.5em;
 }
 
+div {
+	position: relative;
+}
+
 button {
+	position: relative;
 	margin: 5px;
-	min-width: 300px;
+	min-width: 100%;
 }
 
 p {
@@ -18,4 +23,67 @@ p {
 
 h1 {
 	font-size: 48px;
+}
+
+.progress {
+	margin: auto;
+}
+
+div .tooltip {
+	margin-top: 5px;
+    position: relative;
+    text-align: center;
+    opacity: 1;
+    margin-bottom: 20px;
+    	padding-right: 50px;
+	padding-left: 50px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.game-wrapper {
+	margin-top: 50px
+}
+
+.FAQ {
+	cursor: pointer;
+}
+
+.FAQ span {
+	border-bottom: 1px dashed black;
+}
+
+.tooltipText {
+	transition: all 0.3s;
 }
