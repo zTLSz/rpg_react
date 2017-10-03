@@ -37,7 +37,7 @@ class Game extends Component {
   youratk() {
     if (this.state.skhealth > 1) {
       this.setState({
-        skhealth: this.state.skhealth - 1,
+        skhealth: this.state.skhealth - pers.atk,
       })
     } else {
       this.setState({
@@ -126,6 +126,7 @@ class Game extends Component {
             statsmaxh={this.props.statsmaxh.bind(this)} 
             statsmaxm={this.props.statsmaxm.bind(this)}
             close={this.isShopOpen.bind(this)}
+            statsatk={this.props.statsatk.bind(this)}
             cost={cost}/>
         )
     } else {
@@ -135,11 +136,12 @@ class Game extends Component {
     }
     if (this.state.isDeath === false) {
       skeletonDies = (
+          <div>
           <div><p>Создан скелет. <b>Здоровье</b> скелета {this.state.skhealth}. Он наносит Вам  
            {" "} {this.state.skatk*10}  урона в секунду.
           </p> 
           <button className="btn btn-danger" 
-          onClick={this.youratk.bind(this)}>Атаковать скелета силой атаки: {this.state.youratk}</button></div>
+          onClick={this.youratk.bind(this)}>Атаковать скелета силой атаки: {this.state.youratk}</button></div></div>
         )
     } else {
       skeletonDies = (

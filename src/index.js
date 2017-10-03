@@ -30,12 +30,14 @@ var startpoints = 10;
 var skeletcount = 0;
 var cost = 0;
 var costcount = 0;
+var atkcost = 1;
  
 export {pers};
 export {cost};
 export {costcount};
 export {skeletcount};
 export {baseskelet};
+export {atkcost};
 export function costcountinc() {
   costcount = costcount + skeletcount*2;
 }
@@ -60,8 +62,12 @@ export function skeletcountinc() {
   skeletcount = skeletcount + 1;
 }
 
-export function persgoldinc() {
-  pers.gold = pers.gold - cost;
+export function persgoldinc(amount) {
+  pers.gold = pers.gold - amount;
+}
+
+export function persatkinc(amount) {
+  pers.atk =  pers.atk + amount;
 }
 
 class Pers extends Component {
@@ -162,6 +168,13 @@ class Startpoints extends Component {
     });
   }
 
+  statsatk(statsa) {
+    this.setState({
+      atk: 10,
+    });    
+    console.log(this.state.atk)
+  }
+
   render () {
     let button = (
     	<div>
@@ -193,7 +206,8 @@ class Startpoints extends Component {
               statsgold={this.statsgold.bind(this)} 
               addStr={this.addStr.bind(this)}
               statsmaxh={this.statsmaxh.bind(this)} 
-              statsmaxm={this.statsmaxm.bind(this)} />
+              statsmaxm={this.statsmaxm.bind(this)} 
+              statsatk={this.statsatk.bind(this)} />
             </div>
 
             <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
@@ -296,7 +310,8 @@ class NewGame extends Component {
             statsgold={this.props.statsgold.bind(this)}
             addStr={this.props.addStr.bind(this)} 
             statsmaxh={this.props.statsmaxh.bind(this)} 
-            statsmaxm={this.props.statsmaxm.bind(this)} />
+            statsmaxm={this.props.statsmaxm.bind(this)} 
+            statsatk={this.props.statsatk.bind(this)} />
 					</div>
 					)
 			} else {
