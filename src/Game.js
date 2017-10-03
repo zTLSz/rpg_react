@@ -86,7 +86,7 @@ class Game extends Component {
   }
 
   makenewskelet() {
-    let newskeleth = Math.round(10 + skeletcount);
+    let newskeleth = Math.round(1 + skeletcount);
     let newskeletm = 1;
     let newskelet = new baseskelet(newskeleth, newskeletm)
     this.setState({

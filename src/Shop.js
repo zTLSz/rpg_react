@@ -34,10 +34,9 @@ class Shop extends Component {
     if(pers.gold > atkcost) {
           persgoldinc(atkcost);
           this.props.statsgold(pers.gold);
-          let atk = 2;
-          this.props.statsatk(2);
-          persatkinc(2);
-          console.log(pers.atk);
+          let atk = pers.gold + 1;
+          this.props.statsatk(atk);
+          persatkinc(atk);
         }
   }
 

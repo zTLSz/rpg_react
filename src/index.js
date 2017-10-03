@@ -170,9 +170,8 @@ class Startpoints extends Component {
 
   statsatk(statsa) {
     this.setState({
-      atk: 10,
+      atk: statsa,
     });    
-    console.log(this.state.atk)
   }
 
   render () {
@@ -217,7 +216,7 @@ class Startpoints extends Component {
   	          <ProgressBar type={pers.health} max={pers.maxhealth}/> 
   	          <p><b>Мана:</b> {pers.mana = this.state.mana} / {pers.maxmana = this.state.maxmana} </p>
               <ProgressBar type={pers.mana} max={pers.maxmana}/> 
-  	          <p><b>Атака:</b> {pers.atk = this.props.atk}</p>
+  	          <p><b>Атака:</b> {pers.atk = this.state.atk}</p>
   	          <p><b>Сила:</b> {pers.str = this.state.str}</p>
   	          <p><b>Интеллект:</b> {pers.int = this.state.int}</p>
   	          <p><b>Очки:</b> {startpoints = this.state.count} </p>
@@ -303,15 +302,15 @@ class NewGame extends Component {
 					<div>
 						<p>Очки распределены!</p> 
 						<button  className="btn btn-primary" 
-            onClick={this.NewGame.bind(this)}>Начать новую игру</button>
+            			onClick={this.NewGame.bind(this)}>Начать новую игру</button>
 						<Game chars={this.props.chars} skeleton={newskelet} 
-            statschild={this.props.statschild.bind(this)}
-            statsmana={this.props.statsmana.bind(this)} 
-            statsgold={this.props.statsgold.bind(this)}
-            addStr={this.props.addStr.bind(this)} 
-            statsmaxh={this.props.statsmaxh.bind(this)} 
-            statsmaxm={this.props.statsmaxm.bind(this)} 
-            statsatk={this.props.statsatk.bind(this)} />
+			            statschild={this.props.statschild.bind(this)}
+			            statsmana={this.props.statsmana.bind(this)} 
+			            statsgold={this.props.statsgold.bind(this)}
+			            addStr={this.props.addStr.bind(this)} 
+			            statsmaxh={this.props.statsmaxh.bind(this)} 
+			            statsmaxm={this.props.statsmaxm.bind(this)} 
+			            statsatk={this.props.statsatk.bind(this)} />
 					</div>
 					)
 			} else {
